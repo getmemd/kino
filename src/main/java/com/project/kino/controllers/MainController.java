@@ -1,6 +1,9 @@
 package com.project.kino.controllers;
 
+import com.project.kino.entities.Roles;
 import com.project.kino.entities.Users;
+import com.project.kino.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,9 +11,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 @Controller
 public class MainController extends BaseController {
 
+    @Autowired
+    UserService userService;
 
     @GetMapping(path = "/")
     public String index(Model model) {
@@ -23,19 +32,57 @@ public class MainController extends BaseController {
         return "annonymous/login";
     }
 
+    @PreAuthorize("isAnonymous()")
+    @GetMapping(path = "/register")
+    public String register(Model model) {
+        return "annonymous/signup";
+    }
+
+    @PreAuthorize("isAnonymous()")
+    @PostMapping(path = "/signup")
+    public String signup(Model model,
+            @RequestParam(name = "user_email") String email,
+            @RequestParam(name = "user_password") String password,
+            @RequestParam(name = "user_password_repeat") String repeatpassword,
+            @RequestParam(name = "user_fullName") String fullName)
+    {
+        System.out.println("ZASHEL");
+        String redirect = "redirect:/";
+        if(!repeatpassword.equals(password)){
+            model.addAttribute("password_error", "Passwords do not match");
+            redirect = "annonymous/signup";
+        }
+
+        Roles role_user = new Roles("ROLE_USER");
+        Set<Roles> roles = new HashSet<>();
+            roles.add(role_user);
+        Users user = new Users();
+        user.setEmail(email);
+        user.setFullName(fullName);
+        user.setPassword(password);
+        user.setRoles(roles);
+        Date today = new Date();
+        user.setCreatedAt(today);
+        if(!userService.saveUser(user)){
+            model.addAttribute("email_username_error", "Email or username are already taken, try another");
+            redirect = "annonymous/signup";
+        }
+            return redirect;
+    }
+
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @GetMapping(path = "/profile")
     public String profile(Model model) {
         return "profile";
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @GetMapping(path = "/addpost")
     public String addPost(Model model) {
-        return "user/addpost";
+        return "admin/addpost";
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PostMapping(path = "/addpost")
     public String addPost(
             @RequestParam(name = "title") String title,
