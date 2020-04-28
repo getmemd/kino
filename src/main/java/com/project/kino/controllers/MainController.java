@@ -1,9 +1,7 @@
 package com.project.kino.controllers;
 
-import com.project.kino.entities.Genres;
-import com.project.kino.entities.Movies;
-import com.project.kino.entities.Roles;
-import com.project.kino.entities.Users;
+import com.project.kino.entities.*;
+import com.project.kino.services.ActorsService;
 import com.project.kino.services.GenresService;
 import com.project.kino.services.MoviesService;
 import com.project.kino.services.UserService;
@@ -33,11 +31,21 @@ public class MainController extends BaseController {
     @Autowired
     GenresService genresService;
 
+    @Autowired
+    ActorsService actorsService;
+
     @GetMapping(path = "/")
     public String index(Model model) {
         List<Movies> movies = moviesService.getAllMovies();
         model.addAttribute("movies", movies);
         return "index";
+    }
+
+    @GetMapping(path = "/actors")
+    public String actors(Model model) {
+        List<Actors> actors = actorsService.getAllActors();
+        model.addAttribute("actors", actors);
+        return "actors";
     }
 
     @GetMapping(path = "/genres")
