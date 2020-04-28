@@ -1,18 +1,22 @@
 package com.project.kino.controllers;
 
+import com.project.kino.entities.Movies;
 import com.project.kino.entities.Roles;
 import com.project.kino.entities.Users;
+import com.project.kino.services.MoviesService;
 import com.project.kino.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -21,9 +25,21 @@ public class MainController extends BaseController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    MoviesService moviesService;
+
     @GetMapping(path = "/")
     public String index(Model model) {
+        List<Movies> movies = moviesService.getAllMovies();
+        model.addAttribute("movies", movies);
         return "index";
+    }
+
+    @GetMapping(path = "/movie/{id}")
+    public String movie(Model model, @PathVariable(name = "id") Long id) {
+        Movies movie = moviesService.getMovieById(id);
+        model.addAttribute("movie", movie);
+        return "movie";
     }
 
     @PreAuthorize("isAnonymous()")
