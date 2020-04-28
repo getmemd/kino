@@ -14,7 +14,7 @@ import java.util.Locale;
 public class WebMvcConfig implements WebMvcConfigurer {
 
     @Bean
-    public ReloadableResourceBundleMessageSource messageSource(){
+    public ReloadableResourceBundleMessageSource messageSource() {
         ReloadableResourceBundleMessageSource resource = new ReloadableResourceBundleMessageSource();
         resource.setBasename("classpath:messages");
         resource.setDefaultEncoding("UTF-8");
@@ -22,16 +22,16 @@ public class WebMvcConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public CookieLocaleResolver localeResolver(){
+    public CookieLocaleResolver localeResolver() {
         CookieLocaleResolver resolver = new CookieLocaleResolver();
         resolver.setDefaultLocale(new Locale("en"));
         resolver.setCookieName("current-lang");
-        resolver.setCookieMaxAge(3600*24*30);
+        resolver.setCookieMaxAge(3600 * 24 * 30);
         return resolver;
     }
 
     @Bean
-    public LocaleChangeInterceptor changeInterceptor(){
+    public LocaleChangeInterceptor changeInterceptor() {
         LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
         interceptor.setParamName("lang");
         return interceptor;

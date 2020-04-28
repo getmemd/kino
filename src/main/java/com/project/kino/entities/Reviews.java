@@ -10,18 +10,15 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "t_posts")
-public class Posts extends BaseEntity {
-
+@Table(name = "t_reviews")
+public class Reviews extends BaseEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "author_id")
     private Users author;
 
-    @Column(name = "title")
-    private String title;
+    @Column(name = "text")
+    private String text;
 
-    @Lob
-    @Column(name = "content")
-    private String content;
-
+    @Column(name = "rating")
+    private int rating;
 }
