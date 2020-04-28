@@ -1,8 +1,10 @@
 package com.project.kino.controllers;
 
+import com.project.kino.entities.Genres;
 import com.project.kino.entities.Movies;
 import com.project.kino.entities.Roles;
 import com.project.kino.entities.Users;
+import com.project.kino.services.GenresService;
 import com.project.kino.services.MoviesService;
 import com.project.kino.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +30,21 @@ public class MainController extends BaseController {
     @Autowired
     MoviesService moviesService;
 
+    @Autowired
+    GenresService genresService;
+
     @GetMapping(path = "/")
     public String index(Model model) {
         List<Movies> movies = moviesService.getAllMovies();
         model.addAttribute("movies", movies);
         return "index";
+    }
+
+    @GetMapping(path = "/genres")
+    public String genres(Model model) {
+        List<Genres> genres = genresService.getAllGenres();
+        model.addAttribute("genres", genres);
+        return "genres";
     }
 
     @GetMapping(path = "/movie/{id}")
