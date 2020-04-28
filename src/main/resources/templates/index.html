@@ -1,0 +1,14 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="main/main.html">
+<div layout:fragment="content">
+    <div class="jumbotron" th:each="post : ${posts}">
+        <h3 th:text="${post.title}"></h3>
+        <p class="lead" th:utext="${post.content}"></p>
+        <hr class="my-4">
+        <p th:text="'Added by : ' + ${post.author.fullName}"></p>
+        <a class="btn btn-primary btn-sm" th:href="@{'/readpost/' + ${post.id}}" role="button"
+           th:text="#{button.readmore}"></a>
+    </div>
+</div>
+</html>

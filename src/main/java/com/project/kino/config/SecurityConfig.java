@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
@@ -17,7 +18,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private UserService userService;
+    UserService userService;
+
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder builder) throws Exception{
@@ -27,27 +33,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception{
 
-        http.authorizeRequests()
-                .antMatchers("/css/**").permitAll()
-                .antMatchers("/images/**").permitAll()
-                .antMatchers("/", "/*").permitAll()
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/moder/**").hasAnyRole("ADMIN", "MODERATOR");
+        http.authorizeRequests().
+                antMatchers("/css/**").permitAll().
+                antMatchers("/js/**").permitAll().
+                antMatchers("/").permitAll();
 
-        http.formLogin().
-                usernameParameter("user_email").
-                passwordParameter("user_password").
-                failureUrl("/login-reg?error").
-                loginPage("/login-reg").
-                loginProcessingUrl("/signin")
-                .defaultSuccessUrl("/")
-                .permitAll();
+        http.formLogin()
+                .usernameParameter("user_email")
+                .passwordParameter("user_password")
+                .loginPage("/login").permitAll()
+                .loginProcessingUrl("/auth").permitAll()
+                .failureUrl("/login?error").permitAll()
+                .defaultSuccessUrl("/profile");
 
-        http.logout().permitAll().
-                logoutUrl("/logout").
-                logoutSuccessUrl("/").permitAll()
-                .invalidateHttpSession(true);
+        http.logout()
+                .logoutSuccessUrl("/login")
+                .logoutUrl("/signout");
 
         http.csrf().disable();
+
     }
+
 }
