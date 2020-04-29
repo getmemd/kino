@@ -23,7 +23,7 @@ public class Users extends BaseEntity {
     @Column(name = "full_name")
     private String fullName;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Roles> roles;
 
 }

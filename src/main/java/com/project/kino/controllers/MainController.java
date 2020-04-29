@@ -77,21 +77,20 @@ public class MainController extends BaseController {
     @PreAuthorize("isAnonymous()")
     @PostMapping(path = "/signup")
     public String signup(Model model,
-            @RequestParam(name = "user_email") String email,
-            @RequestParam(name = "user_password") String password,
-            @RequestParam(name = "user_password_repeat") String repeatpassword,
-            @RequestParam(name = "user_fullName") String fullName)
-    {
+                         @RequestParam(name = "user_email") String email,
+                         @RequestParam(name = "user_password") String password,
+                         @RequestParam(name = "user_password_repeat") String repeatpassword,
+                         @RequestParam(name = "user_fullName") String fullName) {
         System.out.println("ZASHEL");
         String redirect = "redirect:/";
-        if(!repeatpassword.equals(password)){
+        if (!repeatpassword.equals(password)) {
             model.addAttribute("password_error", "Passwords do not match");
             redirect = "annonymous/signup";
         }
 
         Roles role_user = new Roles("ROLE_USER");
         Set<Roles> roles = new HashSet<>();
-            roles.add(role_user);
+        roles.add(role_user);
         Users user = new Users();
         user.setEmail(email);
         user.setFullName(fullName);
@@ -99,11 +98,11 @@ public class MainController extends BaseController {
         user.setRoles(roles);
         Date today = new Date();
         user.setCreatedAt(today);
-        if(!userService.saveUser(user)){
+        if (!userService.saveUser(user)) {
             model.addAttribute("email_username_error", "Email or username are already taken, try another");
             redirect = "annonymous/signup";
         }
-            return redirect;
+        return redirect;
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")

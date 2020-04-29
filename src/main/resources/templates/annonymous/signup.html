@@ -9,17 +9,18 @@
                     <label>
                         Email:
                     </label>
-                    <span th:utext = "${email_username_error}"></span>
+                    <span th:utext="${email_username_error}"></span>
                     <input type="email" class="form-control" name="user_email">
                 </div>
                 <div class="form-group">
                     <label th:text="#{label.password}"></label>
-                    <span th:utext = "${password_error}"></span>
+                    <span th:utext="${password_error}"></span>
                     <input type="password" class="form-control" name="user_password">
                 </div>
                 <div class="form-group">
                     <label th:text="#{label.password_repeat}"></label>
-                    <input type="password" class="form-control" name="user_password_repeat" pattern=".{6,}" required title="6 characters minimum">
+                    <input type="password" class="form-control" name="user_password_repeat" pattern=".{6,}" required
+                           title="6 characters minimum">
                 </div>
                 <div class="form-group">
                     <label th:text="#{label.fullName}"></label>
