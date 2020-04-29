@@ -1,10 +1,7 @@
 package com.project.kino.controllers;
 
 import com.project.kino.entities.*;
-import com.project.kino.services.ActorsService;
-import com.project.kino.services.GenresService;
-import com.project.kino.services.MoviesService;
-import com.project.kino.services.UserService;
+import com.project.kino.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -33,6 +30,9 @@ public class MainController extends BaseController {
 
     @Autowired
     ActorsService actorsService;
+
+    @Autowired
+    ReviewsService reviewsService;
 
     @GetMapping(path = "/")
     public String index(Model model) {
@@ -74,14 +74,18 @@ public class MainController extends BaseController {
         return "annonymous/signup";
     }
 
-    @PreAuthorize("isAnonymous()")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', isAnonymous())")
+    @GetMapping(path = "/adminregister")
+    public String adminregister(Model model) {
+        return "annonymous/signup";
+    }
+
     @PostMapping(path = "/signup")
     public String signup(Model model,
                          @RequestParam(name = "user_email") String email,
                          @RequestParam(name = "user_password") String password,
                          @RequestParam(name = "user_password_repeat") String repeatpassword,
                          @RequestParam(name = "user_fullName") String fullName) {
-        System.out.println("ZASHEL");
         String redirect = "redirect:/";
         if (!repeatpassword.equals(password)) {
             model.addAttribute("password_error", "Passwords do not match");
@@ -96,8 +100,7 @@ public class MainController extends BaseController {
         user.setFullName(fullName);
         user.setPassword(password);
         user.setRoles(roles);
-        Date today = new Date();
-        user.setCreatedAt(today);
+        user.setCreatedAt(new Date());
         if (!userService.saveUser(user)) {
             model.addAttribute("email_username_error", "Email or username are already taken, try another");
             redirect = "annonymous/signup";
@@ -108,6 +111,11 @@ public class MainController extends BaseController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @GetMapping(path = "/profile")
     public String profile(Model model) {
+        Users user = getUserData();
+        List<Reviews> reviews = reviewsService.getAllReviewsByUser(user.getEmail());
+        System.out.println(reviews);
+        model.addAttribute("user", user);
+        model.addAttribute("reviews", reviews);
         return "profile";
     }
 

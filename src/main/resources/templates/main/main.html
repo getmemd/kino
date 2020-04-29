@@ -56,10 +56,7 @@
                     <a class="nav-link" th:href="@{'?lang=ru'}">РУС</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{'/'}" th:text="#{link.profile}"></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{'/addpost'}" th:text="#{link.addpost}"></a>
+                    <a class="nav-link" th:href="@{'/profile'}" th:text="#{link.profile}"></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:text="#{link.logout}" href="JavaScript:void(0)" onclick="logout()"></a>
@@ -71,6 +68,20 @@
                         document.getElementById("logoutId").submit();
                     }
                 </script>
+            </ul>
+            <ul class="navbar-nav mr-auto" sec:authorize="hasAnyRole('ROLE_ADMIN')">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{'/addmovie'}" th:text="#{link.addmovie}"></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{'/addgenre'}" th:text="#{link.addgenre}"></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{'/addactor'}" th:text="#{link.addactor}"></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{'/adminregister'}" th:text="#{link.register}"></a>
+                </li>
             </ul>
 
         </div>

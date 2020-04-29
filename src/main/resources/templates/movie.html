@@ -12,5 +12,15 @@
     <div class="jumbotron" th:each="genre : ${movie.genres}">
         <h3 th:text="${genre.name}"></h3>
     </div>
+    <div class="jumbotron" th:each="review : ${movie.reviews}">
+        <div>
+            Written by
+            <i th:utext="${review.author.fullName}"></i>
+            <i th:utext="${review.getCreatedAt()}"></i>
+        </div>
+
+        <p class="lead" th:utext="${review.text}"></p>
+        <h1 th:utext="${review.rating}"></h1>
+    </div>
 </div>
 </html>

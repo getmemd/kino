@@ -26,6 +26,10 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
+    public Users getUserByEmail(String email) {
+        return userRepository.findByDeletedAtNullAndEmail(email);
+    }
+
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         Users user = userRepository.findByDeletedAtNullAndEmail(s);

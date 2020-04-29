@@ -1,11 +1,12 @@
-<html
-        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-        layout:decorator="main/main.html">
+<html xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="main/main.html">
 <div layout:fragment="content">
-    <div class="row">
-        <div class="col-sm-12">
-
-        </div>
+    <h3 th:text="${user.fullName}"></h3>
+    <div class="jumbotron" th:each="review : ${reviews}">
+        <i th:utext="${review.getCreatedAt()}"></i>
+        <p class="lead" th:utext="${review.text}"></p>
+        <h1 th:utext="${review.rating}"></h1>
     </div>
 </div>
 </html>
