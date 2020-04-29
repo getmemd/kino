@@ -17,4 +17,8 @@ public class ReviewsServiceImpl implements ReviewsService {
     public List<Reviews> getAllReviewsByUser(String email) {
         return reviewsRepository.findByDeletedAtNullAndAuthor_Email(email);
     }
+
+    public void saveReview(Reviews review) {
+        reviewsRepository.save(review);
+    }
 }

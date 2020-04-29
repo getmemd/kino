@@ -8,4 +8,6 @@ import java.util.List;
 @Service
 public interface ReviewsService {
     List<Reviews> getAllReviewsByUser(String email);
+
+    void saveReview(Reviews review);
 }

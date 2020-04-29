@@ -167,6 +167,21 @@ public class MainController extends BaseController {
         return "genres";
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    @PostMapping(path = "/add/review")
+    public String addReview(Model model,
+                            @RequestParam(name = "text") String text,
+                            @RequestParam(name = "rating") int rating
+    ) {
+        Reviews review = new Reviews();
+        review.setAuthor(getUserData());
+        review.setRating(rating);
+        review.setText(text);
+        review.setCreatedAt(new Date());
+        reviewsService.saveReview(review);
+        return "index";
+    }
+
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @GetMapping(path = "/adminregister")
     public String adminRegister(Model model) {
