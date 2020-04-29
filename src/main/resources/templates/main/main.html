@@ -59,6 +59,15 @@
                     <a class="nav-link" th:href="@{'/profile'}" th:text="#{link.profile}"></a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" th:href="@{'/'}" th:text="#{link.home}"></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{'/genres'}" th:text="#{link.genres}"></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{'/actors'}" th:text="#{link.actors}"></a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" th:text="#{link.logout}" href="JavaScript:void(0)" onclick="logout()"></a>
                 </li>
                 <form th:action="@{'/signout'}" method="post" id="logoutId">
@@ -78,6 +87,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{'/addactor'}" th:text="#{link.addactor}"></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{'/adminpage'}" th:text="#{link.userslist}"></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{'/adminregister'}" th:text="#{link.register}"></a>

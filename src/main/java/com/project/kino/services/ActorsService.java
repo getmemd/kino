@@ -8,4 +8,6 @@ import java.util.List;
 @Service
 public interface ActorsService {
     List<Actors> getAllActors();
+
+    void saveActor(Actors actor);
 }

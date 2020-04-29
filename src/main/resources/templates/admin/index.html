@@ -1,10 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
+<html xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="main/main.html">
+<div layout:fragment="content">
+    <table cellpadding="20" class="mt-4 table table-stripped">
+        <thead>
+        <tr>
+            <th>
+                ID
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Roles
+            </th>
+            <th>
+                BAN
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.getId()}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.fullName}"></td>
+            <td>
+                <p style="margin: 0;" th:each="role : ${user.roles}" th:text="${role.role}"></p>
+            </td>
+            <td th:if="${user.getDeletedAt() == null}">
+                <form method="post" th:action="@{'/ban'}">
+                    <input type="hidden" name="userID" th:value="${user.getId()}">
+                    <button class="btn btn-danger">BAN</button>
+                </form>
+            </td>
+            <td th:unless="${user.getDeletedAt() == null}">
+                <form method="post" th:action="@{'/unban'}">
+                    <input type="hidden" name="userID" th:value="${user.getId()}">
+                    <button class="btn btn-info">UNBAN</button>
+                </form>
+            </td>
+            <td th:unless="${user.getDeletedAt() == null}">
+                <form method="post" th:action="@{'/deleteUser'}">
+                    <input type="hidden" name="userID" th:value="${user.getId()}">
+                    <button class="btn btn-danger">DELETE</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </html>

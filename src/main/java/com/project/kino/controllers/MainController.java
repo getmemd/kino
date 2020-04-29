@@ -74,9 +74,102 @@ public class MainController extends BaseController {
         return "annonymous/signup";
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', isAnonymous())")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @GetMapping(path = "/adminpage")
+    public String adminpage(Model model) {
+        List<Users> users = userService.getAllUsers();
+        System.out.println(users);
+        model.addAttribute("users", users);
+        return "admin/index";
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PostMapping(path = "/ban")
+    public String ban(Model model, @RequestParam(name = "userID") Long id) {
+        Users user = userService.getUserById(id).get();
+        user.setDeletedAt(new Date());
+        userService.updateUser(user);
+        return "admin/index";
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PostMapping(path = "/unban")
+    public String unban(Model model, @RequestParam(name = "userID") Long id) {
+        Users user = userService.getUserById(id).get();
+        user.setDeletedAt(null);
+        userService.updateUser(user);
+        return "admin/index";
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PostMapping(path = "/deleteUser")
+    public String deleteUser(Model model, @RequestParam(name = "userID") Long id) {
+        Users user = userService.getUserById(id).get();
+        userService.deleteUser(user);
+        return "admin/index";
+    }
+
+    // Get запросы для фильмов и тд
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @GetMapping(path = "/addmovie")
+    public String addMovie(Model model) {
+        return "admin/addmovie";
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @GetMapping(path = "/addactor")
+    public String addActor(Model model) {
+        return "admin/addactor";
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @GetMapping(path = "/addgenre")
+    public String addGenre(Model model) {
+        return "admin/addgenre";
+    }
+
+    // Post запросы для добавления
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PostMapping(path = "/add/movie")
+    public String addMovieDB(Model model,
+                             @RequestParam(name = "title") String title,
+                             @RequestParam(name = "description") String description
+    ) {
+        Movies movie = new Movies();
+        movie.setTitle(title);
+        movie.setDescription(description);
+        movie.setCreatedAt(new Date());
+        moviesService.saveMovie(movie);
+        return "index";
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PostMapping(path = "/add/actor")
+    public String addActorDB(Model model,
+                             @RequestParam(name = "fullName") String fullName
+    ) {
+        Actors actor = new Actors();
+        actor.setFullName(fullName);
+        actor.setCreatedAt(new Date());
+        actorsService.saveActor(actor);
+        return "actors";
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PostMapping(path = "/add/genre")
+    public String addGenreDB(Model model,
+                             @RequestParam(name = "name") String name
+    ) {
+        Genres genre = new Genres();
+        genre.setName(name);
+        genre.setCreatedAt(new Date());
+        genresService.saveGenre(genre);
+        return "genres";
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @GetMapping(path = "/adminregister")
-    public String adminregister(Model model) {
+    public String adminRegister(Model model) {
         return "annonymous/signup";
     }
 
@@ -113,7 +206,6 @@ public class MainController extends BaseController {
     public String profile(Model model) {
         Users user = getUserData();
         List<Reviews> reviews = reviewsService.getAllReviewsByUser(user.getEmail());
-        System.out.println(reviews);
         model.addAttribute("user", user);
         model.addAttribute("reviews", reviews);
         return "profile";

@@ -1,7 +1,6 @@
 package com.project.kino.services.impl;
 
 import com.project.kino.entities.Reviews;
-import com.project.kino.entities.Users;
 import com.project.kino.repositories.ReviewsRepository;
 import com.project.kino.services.ReviewsService;
 import org.springframework.beans.factory.annotation.Autowired;

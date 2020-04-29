@@ -17,4 +17,8 @@ public class GenresServiceImpl implements GenresService {
     public List<Genres> getAllGenres() {
         return genresRepository.findAll();
     }
+
+    public void saveGenre(Genres genre) {
+        genresRepository.save(genre);
+    }
 }

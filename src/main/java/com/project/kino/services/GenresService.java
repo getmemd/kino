@@ -8,4 +8,6 @@ import java.util.List;
 @Service
 public interface GenresService {
     List<Genres> getAllGenres();
+
+    void saveGenre(Genres genre);
 }

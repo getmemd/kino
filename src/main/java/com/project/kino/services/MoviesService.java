@@ -10,4 +10,6 @@ public interface MoviesService {
     List<Movies> getAllMovies();
 
     Movies getMovieById(Long id);
+
+    void saveMovie(Movies movie);
 }

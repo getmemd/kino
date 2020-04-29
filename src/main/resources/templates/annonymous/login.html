@@ -9,11 +9,11 @@
                     <label>
                         Email:
                     </label>
-                    <input type="email" class="form-control" name="user_email">
+                    <input type="email" class="form-control" name="user_email" required>
                 </div>
                 <div class="form-group">
                     <label th:text="#{label.password}"></label>
-                    <input type="password" class="form-control" name="user_password">
+                    <input type="password" class="form-control" name="user_password" required>
                 </div>
                 <div class="form-group">
                     <button class="btn btn-success" th:text="#{label.login}"></button>

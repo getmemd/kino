@@ -10,12 +10,12 @@
                         Email:
                     </label>
                     <span th:utext="${email_username_error}"></span>
-                    <input type="email" class="form-control" name="user_email">
+                    <input type="email" class="form-control" name="user_email" required>
                 </div>
                 <div class="form-group">
                     <label th:text="#{label.password}"></label>
                     <span th:utext="${password_error}"></span>
-                    <input type="password" class="form-control" name="user_password">
+                    <input type="password" class="form-control" name="user_password" required>
                 </div>
                 <div class="form-group">
                     <label th:text="#{label.password_repeat}"></label>
@@ -24,7 +24,7 @@
                 </div>
                 <div class="form-group">
                     <label th:text="#{label.fullName}"></label>
-                    <input type="text" class="form-control" name="user_fullName">
+                    <input type="text" class="form-control" name="user_fullName" required>
                 </div>
                 <div class="form-group">
                     <button class="btn btn-success" th:text="#{label.register}"></button>

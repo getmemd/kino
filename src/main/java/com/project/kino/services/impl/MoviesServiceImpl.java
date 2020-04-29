@@ -21,4 +21,8 @@ public class MoviesServiceImpl implements MoviesService {
     public Movies getMovieById(Long id) {
         return moviesRepository.getOne(id);
     }
+
+    public void saveMovie(Movies movie) {
+        moviesRepository.save(movie);
+    }
 }

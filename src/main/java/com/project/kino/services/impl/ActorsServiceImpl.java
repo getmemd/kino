@@ -17,4 +17,8 @@ public class ActorsServiceImpl implements ActorsService {
     public List<Actors> getAllActors() {
         return actorsRepository.findAll();
     }
+
+    public void saveActor(Actors actor) {
+        actorsRepository.save(actor);
+    }
 }
