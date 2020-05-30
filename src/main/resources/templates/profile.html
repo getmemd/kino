@@ -7,6 +7,10 @@
         <i th:utext="${review.getCreatedAt()}"></i>
         <p class="lead" th:utext="${review.text}"></p>
         <h1 th:utext="${review.rating}"></h1>
+        <form th:action="@{'/delete/review'}" method="post">
+            <input type="hidden" name="reviewId" th:value="${review.getId()}">
+            <button class="btn btn-danger">DELETE</button>
+        </form>
     </div>
 </div>
 </html>

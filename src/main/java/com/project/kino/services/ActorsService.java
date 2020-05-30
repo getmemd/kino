@@ -9,5 +9,9 @@ import java.util.List;
 public interface ActorsService {
     List<Actors> getAllActors();
 
+    Actors getActorById(Long id);
+
     void saveActor(Actors actor);
+
+    void deleteActor(Actors actor);
 }

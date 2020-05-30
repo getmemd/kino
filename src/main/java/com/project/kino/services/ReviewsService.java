@@ -9,5 +9,9 @@ import java.util.List;
 public interface ReviewsService {
     List<Reviews> getAllReviewsByUser(String email);
 
+    Reviews getReviewById(Long id);
+
     void saveReview(Reviews review);
+
+    void deleteReview(Reviews review);
 }

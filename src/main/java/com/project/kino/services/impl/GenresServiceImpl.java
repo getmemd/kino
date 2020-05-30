@@ -18,7 +18,15 @@ public class GenresServiceImpl implements GenresService {
         return genresRepository.findAll();
     }
 
+    public Genres getGenreById(Long id) {
+        return genresRepository.getOne(id);
+    }
+
     public void saveGenre(Genres genre) {
         genresRepository.save(genre);
+    }
+
+    public void deleteGenre(Genres genre) {
+        genresRepository.delete(genre);
     }
 }

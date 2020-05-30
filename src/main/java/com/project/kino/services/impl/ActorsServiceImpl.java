@@ -18,7 +18,15 @@ public class ActorsServiceImpl implements ActorsService {
         return actorsRepository.findAll();
     }
 
+    public Actors getActorById(Long id) {
+        return actorsRepository.getOne(id);
+    }
+
     public void saveActor(Actors actor) {
         actorsRepository.save(actor);
+    }
+
+    public void deleteActor(Actors actor) {
+        actorsRepository.delete(actor);
     }
 }

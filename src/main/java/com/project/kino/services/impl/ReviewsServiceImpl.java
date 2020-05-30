@@ -18,7 +18,15 @@ public class ReviewsServiceImpl implements ReviewsService {
         return reviewsRepository.findByDeletedAtNullAndAuthor_Email(email);
     }
 
+    public Reviews getReviewById(Long id) {
+        return reviewsRepository.getOne(id);
+    }
+
     public void saveReview(Reviews review) {
         reviewsRepository.save(review);
+    }
+
+    public void deleteReview(Reviews review) {
+        reviewsRepository.delete(review);
     }
 }

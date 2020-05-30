@@ -1,8 +1,17 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorator="main/main.html">
 <div layout:fragment="content">
+    <div sec:authorize="hasAnyRole('ROLE_ADMIN')">
+        <form th:action="@{'/delete/movie'}" method="post">
+            <input type="hidden" name="movieId" th:value="${movie.getId()}">
+            <button class="btn btn-danger">DELETE</button>
+        </form>
+    </div>
     <div>
+        <img th:src="${movie.poster}">
+        <h1 th:text="${average}"></h1>
         <h1 th:text="${movie.title}"></h1>
         <p class="lead" th:utext="${movie.description}"></p>
     </div>
@@ -18,9 +27,34 @@
             <i th:utext="${review.author.fullName}"></i>
             <i th:utext="${review.getCreatedAt()}"></i>
         </div>
-
         <p class="lead" th:utext="${review.text}"></p>
         <h1 th:utext="${review.rating}"></h1>
+        <div th:if="${review.author == current_user}">
+            <form th:action="@{'/delete/review'}" method="post">
+                <input type="hidden" name="reviewId" th:value="${review.getId()}">
+                <button class="btn btn-danger">DELETE</button>
+            </form>
+        </div>
+    </div>
+    <div>
+        <form th:action="@{'/add/review'}" method="post">
+            <div class="form-group">
+                <label>
+                    RATING :
+                </label>
+                <input type="number" class="form-control" name="rating" required>
+                <input type="hidden" name="movieId" th:value="${movie.getId()}">
+            </div>
+            <div class="form-group">
+                <label>
+                    REVIEW :
+                </label>
+                <textarea name="text" id="post_content" style="min-height: 300px; min-width: 600px;"></textarea>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-info" th:text="#{button.add}"></button>
+            </div>
+        </form>
     </div>
 </div>
 </html>

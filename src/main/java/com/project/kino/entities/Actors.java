@@ -16,4 +16,7 @@ import javax.persistence.Table;
 public class Actors extends BaseEntity {
     @Column(name = "full_name")
     private String fullName;
+
+    @Column(name = "photo")
+    private String photo;
 }

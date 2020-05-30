@@ -21,6 +21,9 @@ public class Movies extends BaseEntity {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "poster")
+    private String poster;
+
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Actors> actors;
 
