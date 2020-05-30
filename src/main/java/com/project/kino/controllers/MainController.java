@@ -34,6 +34,8 @@ public class MainController extends BaseController {
     @GetMapping(path = "/")
     public String index(Model model) {
         List<Movies> movies = moviesService.getAllMovies();
+        List<Genres> genres = genresService.getAllGenres();
+        model.addAttribute("genres", genres);
         model.addAttribute("movies", movies);
         return "index";
     }
