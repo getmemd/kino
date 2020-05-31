@@ -312,4 +312,25 @@ public class MainController extends BaseController {
         model.addAttribute("reviews", reviews);
         return "profile";
     }
+
+    @PostMapping(path = "/edit/profile")
+    public String editProfile(Model model,
+                              @RequestParam(name = "user_email") String email,
+                              @RequestParam(name = "user_password") String password,
+                              @RequestParam(name = "user_password_repeat") String repeatpassword,
+                              @RequestParam(name = "user_fullName") String fullName
+    ){
+        if (!repeatpassword.equals(password)) {
+            model.addAttribute("password_error", "Passwords do not match");
+        }
+        Users user = getUserData();
+        user.setUpdatedAt(new Date());
+        user.setEmail(email);
+        user.setFullName(fullName);
+        user.setPassword(password);
+        if (!userService.saveUser(user)) {
+            model.addAttribute("email_username_error", "Email or username are already taken, try another");
+        }
+        return "profile";
+    }
 }
