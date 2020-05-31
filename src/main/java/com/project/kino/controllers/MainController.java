@@ -163,6 +163,7 @@ public class MainController extends BaseController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PostMapping(path = "/add/movie")
     public String addMovieDB(@RequestParam(name = "title") String title,
+                             @RequestParam(name = "poster") String poster,
                              @RequestParam(name = "description") String description,
                              @RequestParam(value = "actor") Long[] actorsIds,
                              @RequestParam(value = "genre") Long[] genresIds
@@ -184,12 +185,12 @@ public class MainController extends BaseController {
             }
             movie.setGenres(genres);
         }
-
+        movie.setPoster(poster);
         movie.setTitle(title);
         movie.setDescription(description);
         movie.setCreatedAt(new Date());
         moviesService.saveMovie(movie);
-        return "redirect:/";
+        return "redirect:/movie/" + movie.getId();
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
@@ -332,5 +333,88 @@ public class MainController extends BaseController {
             model.addAttribute("email_username_error", "Email or username are already taken, try another");
         }
         return "profile";
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @GetMapping(path = "/editmovie")
+    public String editMovie(Model model, @RequestParam(name = "movieId") Long id) {
+        Movies movie = moviesService.getMovieById(id);
+        List<Actors> actors = actorsService.getAllActors();
+        List<Genres> genres = genresService.getAllGenres();
+        model.addAttribute("actors", actors);
+        model.addAttribute("genres", genres);
+        model.addAttribute("movie", movie);
+        return "admin/editmovie";
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @GetMapping(path = "/editgenre")
+    public String editGenre(Model model, @RequestParam(name = "genreId") Long id) {
+        Genres genre = genresService.getGenreById(id);
+        model.addAttribute("genre", genre);
+        return "admin/editgenre";
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @GetMapping(path = "/editactor")
+    public String editActor(Model model, @RequestParam(name = "actorId") Long id) {
+        Actors actor = actorsService.getActorById(id);
+        model.addAttribute("actor", actor);
+        return "admin/editactor";
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PostMapping(path = "/edit/movie")
+    public String editMovieDB(@RequestParam(name = "poster") String poster,
+                              @RequestParam(name = "title") String title,
+                              @RequestParam(name = "description") String description,
+                              @RequestParam(value = "actor") Long[] actorsIds,
+                              @RequestParam(value = "genre") Long[] genresIds,
+                              @RequestParam(name = "movieId") Long id) {
+        Set<Actors> actors = new HashSet<>();
+        Set<Genres> genres = new HashSet<>();
+        Movies movie = moviesService.getMovieById(id);
+
+        if (actorsIds != null){
+            for (Long actorId : actorsIds){
+                actors.add(actorsService.getActorById(actorId));
+            }
+            movie.setActors(actors);
+        }
+
+        if (genresIds != null) {
+            for (Long genreId : genresIds){
+                genres.add(genresService.getGenreById(genreId));
+            }
+            movie.setGenres(genres);
+        }
+        movie.setPoster(poster);
+        movie.setTitle(title);
+        movie.setDescription(description);
+        movie.setUpdatedAt(new Date());
+        moviesService.saveMovie(movie);
+        return "redirect:/movie/" + movie.getId();
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @GetMapping(path = "/edit/genre")
+    public String editGenreDB(@RequestParam(name = "genreId") Long id,
+                              @RequestParam(name = "name") String name) {
+        Genres genre = genresService.getGenreById(id);
+        genre.setName(name);
+        genre.setUpdatedAt(new Date());
+        genresService.saveGenre(genre);
+        return "redirect:/genres";
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @GetMapping(path = "/edit/actor")
+    public String editActorDB(@RequestParam(name = "actorId") Long id, @RequestParam(name = "fullName") String fullName, @RequestParam(name = "photo") String photo) {
+        Actors actor = actorsService.getActorById(id);
+        actor.setFullName(fullName);
+        actor.setPhoto(photo);
+        actor.setUpdatedAt(new Date());
+        actorsService.saveActor(actor);
+        return "redirect:/actors";
     }
 }
