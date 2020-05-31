@@ -116,7 +116,7 @@ public class MainController extends BaseController {
         Users user = userService.getUserById(id).get();
         user.setDeletedAt(new Date());
         userService.updateUser(user);
-        return "admin/index";
+        return "redirect:/adminpage";
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
@@ -125,7 +125,7 @@ public class MainController extends BaseController {
         Users user = userService.getUserById(id).get();
         user.setDeletedAt(null);
         userService.updateUser(user);
-        return "admin/index";
+        return "redirect:/adminpage";
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
@@ -133,7 +133,7 @@ public class MainController extends BaseController {
     public String deleteUser(Model model, @RequestParam(name = "userID") Long id) {
         Users user = userService.getUserById(id).get();
         userService.deleteUser(user);
-        return "admin/index";
+        return "redirect:/adminpage";
     }
 
     // Get запросы для фильмов и тд
