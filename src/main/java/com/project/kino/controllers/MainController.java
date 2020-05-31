@@ -194,9 +194,11 @@ public class MainController extends BaseController {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PostMapping(path = "/add/actor")
-    public String addActorDB(@RequestParam(name = "fullName") String fullName) {
+    public String addActorDB(@RequestParam(name = "fullName") String fullName,
+                             @RequestParam(name = "photo") String photo) {
         Actors actor = new Actors();
         actor.setFullName(fullName);
+        actor.setPhoto(photo);
         actor.setCreatedAt(new Date());
         actorsService.saveActor(actor);
         return "redirect:/actors";
